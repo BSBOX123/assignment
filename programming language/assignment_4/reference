@@ -1,0 +1,101 @@
+#include<iostream>
+#include<string>
+
+using namespace std;
+
+//부모 클래스
+class BasePrinter {
+protected:
+  string model;
+  string manufacturer;
+  int printedount;
+  int availableCount;
+public:
+  bool print(int pages);
+  BasePrinter();
+  ~BasePrinter();
+};
+
+bool BasePrinter::print(int pages) {
+  if(availableCount > pages) {
+    availableCount -= pages;
+    return true;
+  } else return false;
+}
+
+
+
+//자식 클래스 - 인젝트 프린트
+class InkJetPrinter : public BasePrinter {
+  int availableInk;
+public:
+  bool printInkJet (int pages);
+  InkJetPrinter();
+  int InkShow();
+  ~InkJetPrinter();
+};
+
+int InkJetPrinter::InkShow() {
+  
+}
+
+InkJetPrinter::InkJetPrinter() {
+  model = "Officejet V40";
+  manufacturer = "HP";
+  availableCount = 5;
+  availableInk = 10;
+}
+
+bool InkJetPrinter::printInkJet(int pages) {
+  if(availableInk > pages) {
+    availableInk -= pages;
+    return true;
+  } else return false;
+}
+
+
+
+
+//자식 클래스 - 레이저 프린트
+class LaserPrinter : public BasePrinter {
+  int availableToner;
+public:
+  bool printLaser(int pages);
+  LaserPrinter();
+  void LasShow();
+  ~LaserPrinter();
+};
+
+void LaserPrinter::LasShow() {
+  cout << model << ", " << manufacturer << ", " << "남은 종이 " << availableCount << "장" << "남은 토너" << availableToner << endl;
+}
+
+LaserPrinter::LaserPrinter() {
+  model = "SCX-6x45";
+  manufacturer = "삼성전자";
+  availableCount = 3;
+  availableToner = 20;
+}
+bool LaserPrinter::printLaser(int pages) {
+  printedount = pages;
+  if(availableCount > printedount && availableToner > printedount) {
+    availableToner -= printedount;
+    availableCount -= printedount;
+    cout << model << ", " << manufacturer << ", " << "남은 종이 " << availableCount << "장" << "남은 잉크" << availableToner << endl;
+  } else return false;
+}
+
+
+
+
+
+
+int main() {
+  InkJetPrinter Ink;
+  LaserPrinter Las;
+
+  while(true) {
+    cout << "현재 작동중인 2 대의 프린터는 아래와 같다" << endl;
+    cout << "잉크젯: " << Ink.InkShow() << endl;
+  }
+}
